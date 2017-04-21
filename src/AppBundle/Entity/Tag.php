@@ -41,6 +41,13 @@ class Tag implements \JsonSerializable
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $color;
+
     public function getId()
     {
         return $this->id;
@@ -75,4 +82,15 @@ class Tag implements \JsonSerializable
     {
         return $this->name;
     }
+
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    public function setColor($color)
+    {
+        $this->color = $color;
+    }
+
 }
