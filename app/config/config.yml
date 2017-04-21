@@ -95,3 +95,16 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+
+easy_admin:
+    entities:
+        Post:
+            class: AppBundle\Entity\Post
+
+        Comment:
+            class: AppBundle\Entity\Comment
+        User:
+            class: AppBundle\Entity\User
+            disabled_actions: ['delete']
+        Tag:
+            class: AppBundle\Entity\Tag
