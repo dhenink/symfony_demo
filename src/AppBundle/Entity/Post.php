@@ -14,21 +14,12 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
  * @ORM\Table(name="symfony_demo_post")
- *
- * Defines the properties of the Post entity to represent the blog posts.
- *
- * See http://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class
- *
- * Tip: if you have an existing database, you can generate these entity class automatically.
- * See http://symfony.com/doc/current/cookbook/doctrine/reverse_engineering.html
- *
- * @author Ryan Weaver <weaverryan@gmail.com>
- * @author Javier Eguiluz <javier.eguiluz@gmail.com>
- * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @Vich\Uploadable()
  */
 class Post
 {
@@ -118,6 +109,16 @@ class Post
      * @Assert\Count(max="4", maxMessage="post.too_many_tags")
      */
     private $tags;
+
+    /**
+     * @Vich\UploadableField(mapping="pop_image", fileNameProperty="imageName")
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $imageName;
 
     public function __construct()
     {
@@ -241,4 +242,42 @@ class Post
     {
         return $this->tags;
     }
+
+    /**
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @param string $imageName
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param mixed $imageFile
+     */
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
+        if ($imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->publishedAt = new \DateTimeImmutable();
+        }
+    }
+
 }
